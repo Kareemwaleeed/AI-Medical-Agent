@@ -10,13 +10,13 @@ st.sidebar.markdown(f"""
 ---
 **Course:** Artificial Intelligence
 **Supervised by:** Dr. Mai Ramadan Ibrahim
-**University:**HORUS University
+**University:** Horus University
 **Faculty:** Faculty of Artificial Intelligence
 
 ---
 **Team Members:**
-1. **Abdulrahman Mohamed** (Leader) - 8251537
-2. **Kareem Waleed** - 8251536
+1. **Abdulrahman Mohamed** - 8251537
+2. **Kareem Waleed** (leader) - 8251536
 3. **Ahmed Waleed** - 8251755
 4. **Omar Hassan** - 8241388
 5. **Anas Reda** - 8251689
@@ -72,5 +72,4 @@ if user_query:
     else:
         st.warning("لم يتم تحديد التخصص بدقة، يرجى استشارة طبيب عام.")
 
-st.write("---")
 st.write("---")
