@@ -5,7 +5,7 @@ st.markdown("""<style>.main {direction: RTL; text-align: right;}</style>""", uns
 
 st.sidebar.title("بيانات الطالبة")
 st.sidebar.info("""
-**الاسم:** نور
+**الاسم:** كريم
 **المادة:** ذكاء اصطناعي
 **المشروع:** Intelligent Medical Agent
 """)
