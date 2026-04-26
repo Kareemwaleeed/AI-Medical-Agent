@@ -1,43 +1,63 @@
 import streamlit as st
 
-st.set_page_config(page_title="AI Medical Agent - Nour", page_icon="⚕️")
+st.set_page_config(page_title="AI Smart Medical Agent", page_icon="🧠")
 st.markdown("""<style>.main {direction: RTL; text-align: right;}</style>""", unsafe_allow_html=True)
 
 st.sidebar.title("بيانات الطالبة")
 st.sidebar.info("""
-**الاسم:** نور (اكتبي اسمك بالكامل هنا)
+**الاسم:** نور
 **المادة:** ذكاء اصطناعي
 **المشروع:** Intelligent Medical Agent
 """)
 
-st.title("⚕️ نظام الخبير الطبي الذكي")
+st.title("🧠 نظام الوكيل الطبي الذكي المتكامل")
 st.write("---")
 
-st.subheader("خطوة 1: إدخال البيانات الحيوية")
-temp = st.number_input("درجة حرارة المريض:", min_value=35.0, max_value=42.0, value=37.0)
-
-st.subheader("خطوة 2: تحديد الأعراض")
+st.subheader("الخيار الأول: تحليل الأعراض الشائعة")
 col1, col2 = st.columns(2)
 with col1:
-    cough = st.checkbox("سعال")
-    sore_throat = st.checkbox("احتقان حلق")
+    fever = st.checkbox("ارتفاع حرارة")
+    cough = st.checkbox("سعال مستمر")
+    chest_pain = st.checkbox("ألم في الصدر")
 with col2:
-    headache = st.checkbox("صداع")
-    fatigue = st.checkbox("خمول وتعب")
+    stomach_pain = st.checkbox("ألم في المعدة")
+    blur_vision = st.checkbox("زغللة في العين")
+    dizzy = st.checkbox("دوخة وصداع")
 
-if st.button("تشغيل الـ AI Agent للتشخيص"):
+if st.button("تحليل الأعراض المختارة"):
     st.write("---")
-    st.subheader("نتيجة التحليل:")
-    
-    if temp >= 38.5:
-        st.error("⚠️ تحذير: حمى شديدة. ينصح بزيارة الطبيب فوراً.")
-    elif temp >= 37.5 and (cough or sore_throat):
-        st.warning("🔔 تشخيص مبدئي: اشتباه في عدوى فيروسية.")
-        st.info("النصيحة: الراحة والسوائل الدافئة.")
-    elif headache and fatigue:
-        st.success("✅ تشخيص مبدئي: إرهاق عام ونقص راحة.")
+    if fever and cough and chest_pain:
+        st.error("التشخيص المحتمل: التهاب شعبي أو عدوى صدرية.")
+        st.info("التوجه المقترح: دكتور أمراض صدرية.")
+    elif stomach_pain and dizzy:
+        st.warning("التشخيص المحتمل: اضطراب في الجهاز الهضمي أو تسمم بسيط.")
+        st.info("التوجه المقترح: دكتور باطنة وجهاز هضمي.")
+    elif blur_vision and dizzy:
+        st.warning("التشخيص المحتمل: إجهاد عين أو ضغط دم غير منضبط.")
+        st.info("التوجه المقترح: دكتور رمد أو باطنة.")
+    elif fever:
+        st.success("التشخيص المحتمل: بداية عرضية لبرد.")
+        st.info("التوجه المقترح: طبيب عام.")
     else:
-        st.success("🌟 الحالة مستقرة. نتمنى لك دوام الصحة!")
-        st.balloons()
+        st.info("الرجاء اختيار مجموعة أعراض للتحليل.")
+
+st.write("---")
+st.subheader("الخيار الثاني: اسأل الوكيل الذكي عن تخصص (كتابة)")
+user_query = st.text_input("اكتبي عرضاً أو مرضاً (مثلاً: ألم في الأسنان، حساسية، عظام):").lower()
+
+if user_query:
+    st.write("تحليل النص المدخل...")
+    if "سنان" in user_query or "ضرس" in user_query:
+        st.success("التوجه المقترح: طبيب أسنان.")
+    elif "عظم" in user_query or "ظهر" in user_query or "رجل" in user_query:
+        st.success("التوجه المقترح: طبيب عظام وتأهيل.")
+    elif "جلد" in user_query or "حساسية" in user_query:
+        st.success("التوجه المقترح: طبيب أمراض جلدية.")
+    elif "قلب" in user_query or "نهجان" in user_query:
+        st.success("التوجه المقترح: طبيب أمراض القلب والأوعية الدموية.")
+    elif "مخ" in user_query or "أعصاب" in user_query:
+        st.success("التوجه المقترح: طبيب مخ وأعصاب.")
+    else:
+        st.warning("لم يتم تحديد التخصص بدقة، يرجى استشارة طبيب عام لتوجيهك.")
 
 st.write("---")
