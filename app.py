@@ -1,9 +1,10 @@
 import streamlit as st
 
+# 1. إعداد الصفحة وتنسيق الاتجاه لليمين (RTL)
 st.set_page_config(page_title="AI Smart Medical Agent", page_icon="⚕️", layout="wide")
 st.markdown("""<style>.main {direction: RTL; text-align: right;}</style>""", unsafe_allow_html=True)
 
-# --- SIDEBAR: TEAM INFORMATION ---
+# 2. بيانات الفريق في القائمة الجانبية
 st.sidebar.title("📑 Project Details")
 st.sidebar.markdown(f"""
 ---
@@ -21,7 +22,7 @@ st.sidebar.markdown(f"""
 ---
 """)
 
-# --- DATABASE: EXTENDED DOCTORS DATA ---
+# 3. قاعدة بيانات الأطباء الشاملة
 doctors_db = {
     "دمياط الجديدة": {
         "باطنة": [("د. أحمد علي", "⭐⭐⭐⭐⭐", "01011122233")],
@@ -35,8 +36,8 @@ doctors_db = {
         "أعصاب": [("د. عمرو حسن", "⭐⭐⭐⭐", "01200011122")]
     },
     "الإسكندرية": {
-        "باطنة": [("د. إبراهيم خالد", "⭐⭐⭐⭐⭐", "01044556677")],
-        "تجميل": [("د. رنا أحمد", "⭐⭐⭐⭐⭐", "01122112211")]
+        "تجميل": [("د. رنا أحمد", "⭐⭐⭐⭐⭐", "01122112211")],
+        "باطنة": [("د. إبراهيم خالد", "⭐⭐⭐⭐⭐", "01044556677")]
     },
     "كفر الشيخ": {
         "عظام": [("د. فؤاد خليل", "⭐⭐⭐⭐", "01077889900")],
@@ -50,77 +51,68 @@ doctors_db = {
         "باطنة": [("د. عادل إمام", "⭐⭐⭐⭐", "01055664422")],
         "أسنان": [("د. ريهام سعيد", "⭐⭐⭐⭐⭐", "01133221100")]
     },
-    "الصعيد (أسيوط/سوهاج)": {
-        "قلب": [("د. مجدي يعقوب (مركز أسوان)", "⭐⭐⭐⭐⭐", "19000")],
+    "الصعيد": {
+        "قلب": [("د. مجدي يعقوب (أسوان)", "⭐⭐⭐⭐⭐", "19000")],
         "عظام": [("د. خلف الله الصعيدي", "⭐⭐⭐⭐⭐", "01022334455")]
     }
 }
 
-st.title("⚕️ الوكيل الطبي الذكي الشامل (Smart Medical Agent)")
-st.write("نظام خبير مدعم بالذكاء الاصطناعي لتحليل الأعراض وترشيح الأطباء في كافة محافظات مصر.")
+st.title("⚕️ الوكيل الطبي الذكي (Smart Medical Agent)")
+st.write("نظام خبير لتحليل الأعراض وترشيح الأطباء في كافة محافظات مصر.")
+st.write("---")
 
-# --- STEP 1: CITY & TEMP ---
-st.subheader("1️⃣ البيانات الأساسية")
+# المدخلات الأساسية
 col1, col2 = st.columns(2)
 with col1:
-    city = st.selectbox("اختر المدينة:", ["دمياط الجديدة", "القاهرة", "الإسكندرية", "المنصورة", "كفر الشيخ", "كفر سعد", "الصعيد (أسيوط/سوهاج)"])
+    city = st.selectbox("اختر المدينة:", ["دمياط الجديدة", "القاهرة", "الإسكندرية", "المنصورة", "كفر الشيخ", "كفر سعد", "الصعيد"])
 with col2:
-    temp = st.number_input("درجة الحرارة (مثال: 37):", min_value=34.0, max_value=42.0, value=37.0, step=0.1)
+    temp = st.number_input("درجة الحرارة:", min_value=34.0, max_value=42.0, value=37.2, step=0.1)
 
-# --- STEP 2: COMMON SYMPTOMS (BUTTONS) ---
-st.subheader("2️⃣ الأعراض المشهورة (اضغط للاختيار السريع)")
+# الأعراض الشائعة
+st.subheader("ما هي الأعراض التي تشعر بها؟")
 common_cols = st.columns(4)
-symptom_list = []
+symptoms = []
 with common_cols[0]:
-    if st.checkbox("صداع"): symptom_list.append("صداع")
+    if st.checkbox("صداع"): symptoms.append("صداع")
 with common_cols[1]:
-    if st.checkbox("ارتفاع حرارة"): symptom_list.append("حرارة")
+    if st.checkbox("ارتفاع حرارة"): symptoms.append("حرارة")
 with common_cols[2]:
-    if st.checkbox("ألم ظهر/عظام"): symptom_list.append("عظام")
+    if st.checkbox("ألم ظهر/عظام"): symptoms.append("عظام")
 with common_cols[3]:
-    if st.checkbox("استشارة تجميل"): symptom_list.append("تجميل")
+    if st.checkbox("تجميل"): symptoms.append("تجميل")
 
-st.write("**أو اكتب وصفاً مفصلاً لشكواك:**")
-user_input = st.text_area("مثال: عندي وجع في ضرس العقل ومحتاج دكتور").lower()
+user_input = st.text_area("أو اكتب وصفاً مفصلاً لشكواك:").lower()
 
-# --- ANALYSIS & RECOMMENDATION ---
 if st.button("بدء الفحص والبحث عن الأطباء"):
     st.write("---")
-    specialty = ""
-    diagnosis = ""
+    combined = user_input + " " + " ".join(symptoms)
+    specialty = "باطنة"
+    diagnosis = "أعراض عامة تتطلب فحص باطني."
 
-    # منطق الـ Agent لتحليل النص والأزرار
-    combined_input = user_input + " " + " ".join(symptom_list)
-    
-    if "سنان" in combined_input or "ضرس" in combined_input:
-        specialty, diagnosis = "أسنان", "احتمالية التهاب في العصب أو تسوس."
-    elif "تجميل" in combined_input or "جلد" in combined_input or "بشرة" in combined_input:
-        specialty, diagnosis = "تجميل", "استشارة بخصوص صحة الجلد أو إجراء تجميلي."
-    elif "عظام" in combined_input or "ظهر" in combined_input or "رجل" in combined_input:
-        specialty, diagnosis = "عظام", "احتمالية إجهاد عضلي أو مشاكل في الفقرات."
-    elif "قلب" in combined_input or "نهجان" in combined_input:
-        specialty, diagnosis = "قلب", "تحتاج لفحص كفاءة القلب والضغط."
-    elif "صداع" in combined_input or "أعصاب" in combined_input:
-        specialty, diagnosis = "أعصاب", "احتمالية إجهاد عصبي أو صداع نصفي."
-    else:
-        specialty, diagnosis = "باطنة", "أعراض عامة تتطلب فحص باطني شامل."
+    if "سنان" in combined or "ضرس" in combined:
+        specialty, diagnosis = "أسنان", "احتمالية التهاب في العصب."
+    elif "تجميل" in combined or "جلد" in combined:
+        specialty, diagnosis = "تجميل", "استشارة جلدية أو تجميلية."
+    elif "عظام" in combined or "ظهر" in combined:
+        specialty, diagnosis = "عظام", "احتمالية إجهاد في المفاصل."
+    elif "قلب" in combined:
+        specialty, diagnosis = "قلب", "تحتاج لفحص كفاءة القلب."
 
-    # عرض النتائج
-    st.subheader(f"🔍 تقرير الوكيل الذكي لمدينة {city}:")
+    st.subheader(f"🔍 تقرير الوكيل الذكي:")
     if temp >= 38.5:
-        st.error(f"⚠️ تنبيه: درجة حرارتك ({temp}) مرتفعة. يرجى شرب سوائل وزيارة الطبيب فوراً.")
+        st.error(f"⚠️ تنبيه: درجة حرارتك ({temp}) مرتفعة جداً.")
     
     st.info(f"**التشخيص المتوقع:** {diagnosis}")
     st.success(f"**التخصص المطلوب:** {specialty}")
 
-    st.write(f"### 👩‍⚕️ قائمة الأطباء المرشحين في {city}:")
+    st.write(f"### 👩‍⚕️ قائمة الأطباء في {city}:")
     city_data = doctors_db.get(city, {})
-    specialists = city_data.get(specialty, [])
+    list_docs = city_data.get(specialty, [])
 
-    if specialists:
-        for name, stars, phone in specialists:
+    if list_docs:
+        for name, stars, phone in list_docs:
             st.write(f"✅ **{name}** | {stars} | 📞 {phone}")
     else:
-        st.warning(f"عذراً، لم نجد دكتور {specialty} في قاعدة بيانات {city} حالياً، جاري البحث في أقرب منطقة.")
+        st.warning(f"لا توجد بيانات حالياً لدكتور {specialty} في {city}.")
 
-st.write("---")st.write("---")
+st.write("---")
