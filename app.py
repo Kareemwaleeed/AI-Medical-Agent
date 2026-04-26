@@ -1,32 +1,43 @@
 import streamlit as st
 
-st.set_page_config(page_title="AI Medical Agent", page_icon="⚕️")
+st.set_page_config(page_title="AI Medical Agent - Nour", page_icon="⚕️")
+st.markdown("""<style>.main {direction: RTL; text-align: right;}</style>""", unsafe_allow_html=True)
 
-st.title("⚕️ المساعد الطبي الذكي - AI Agent")
-st.write("هذا النظام يستخدم الذكاء الاصطناعي لتحليل الأعراض وتقديم نصائح أولية.")
+st.sidebar.title("بيانات الطالبة")
+st.sidebar.info("""
+**الاسم:** نور (اكتبي اسمك بالكامل هنا)
+**المادة:** ذكاء اصطناعي
+**المشروع:** Intelligent Medical Agent
+""")
+
+st.title("⚕️ نظام الخبير الطبي الذكي")
 st.write("---")
 
-# مدخلات المستخدم
-st.subheader("من فضلك اختر الأعراض التي تشعر بها:")
-fever = st.checkbox("ارتفاع في درجة الحرارة")
-cough = st.checkbox("سعال جاف")
-headache = st.checkbox("صداع مستمر")
-sore_throat = st.checkbox("احتقان في الحلق")
+st.subheader("خطوة 1: إدخال البيانات الحيوية")
+temp = st.number_input("درجة حرارة المريض:", min_value=35.0, max_value=42.0, value=37.0)
 
-if st.button("تحليل الحالة"):
+st.subheader("خطوة 2: تحديد الأعراض")
+col1, col2 = st.columns(2)
+with col1:
+    cough = st.checkbox("سعال")
+    sore_throat = st.checkbox("احتقان حلق")
+with col2:
+    headache = st.checkbox("صداع")
+    fatigue = st.checkbox("خمول وتعب")
+
+if st.button("تشغيل الـ AI Agent للتشخيص"):
     st.write("---")
-    # منطق الـ AI Agent (Decision Tree simple logic)
-    if fever and cough and sore_throat:
-        st.warning("التشخيص المحتمل: أعراض مشابهة للإنفلونزا.")
-        st.info("النصيحة: يجب الراحة التامة وشرب سوائل دافئة، واستشارة طبيب إذا زادت الحرارة.")
-    elif headache and fever:
-        st.warning("التشخيص المحتمل: إجهاد عام أو بداية التهاب.")
-        st.info("النصيحة: قس درجة حرارتك بانتظام وخذ قسطاً من الراحة.")
-    elif cough and sore_throat:
-        st.success("التشخيص المحتمل: التهاب بسيط في الحلق.")
-        st.info("النصيحة: الغرغرة بماء وملح وتجنب المشروبات الباردة.")
+    st.subheader("نتيجة التحليل:")
+    
+    if temp >= 38.5:
+        st.error("⚠️ تحذير: حمى شديدة. ينصح بزيارة الطبيب فوراً.")
+    elif temp >= 37.5 and (cough or sore_throat):
+        st.warning("🔔 تشخيص مبدئي: اشتباه في عدوى فيروسية.")
+        st.info("النصيحة: الراحة والسوائل الدافئة.")
+    elif headache and fatigue:
+        st.success("✅ تشخيص مبدئي: إرهاق عام ونقص راحة.")
     else:
-        st.success("لا توجد أعراض خطيرة واضحة حالياً.")
+        st.success("🌟 الحالة مستقرة. نتمنى لك دوام الصحة!")
         st.balloons()
 
-st.sidebar.info("مشروع مقدم للدكتور - مادة الذكاء الاصطناعي")
+st.write("---")
