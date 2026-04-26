@@ -10,7 +10,7 @@ st.sidebar.markdown(f"""
 ---
 **Course:** Artificial Intelligence
 **Supervised by:** Dr. Mai Ramadan Ibrahim
-**University:** Horus University
+**University:**HORUS University
 **Faculty:** Faculty of Artificial Intelligence
 
 ---
