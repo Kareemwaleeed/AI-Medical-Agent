@@ -16,9 +16,7 @@ st.sidebar.markdown(f"""
 **Team Members:**
 1. **Abdulrahman Mohamed**  - 8251537
 2. **Kareem Waleed** (Leader) - 8251536
-3. **Ahmed Waleed** - 8251755
 4. **Omar Hassan** - 8241388
-5. **Anas Reda** - 8251689
 ---
 """)
 
