@@ -14,7 +14,7 @@ st.sidebar.markdown(f"""
 **Faculty:** Faculty of Artificial Intelligence
 
 **Team Members:**
-1. **Abdulrahman Mohamed**  - 8251537
+1. **omar hossam**  - 8251774
 2. **Kareem Waleed** (Leader) - 8251536
 4. **Omar Hassan** - 8241388
 ---
