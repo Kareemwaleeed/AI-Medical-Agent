@@ -6,7 +6,6 @@ st.set_page_config(page_title="AI Smart Medical Agent", page_icon="⚕️", layo
 st.markdown("""<style>.main {direction: RTL; text-align: right;}</style>""", unsafe_allow_html=True)
 
 # 2. إعداد مفتاح الـ API لـ Gemini
-# يفضل حفظه في st.secrets أو إدخاله عبر القائمة الجانبية
 api_key = st.secrets.get("GEMINI_API_KEY") or st.sidebar.text_input("أدخل مفتاح Gemini API الخاص بك:", type="password")
 
 if not api_key:
@@ -96,8 +95,5 @@ if st.button("بدء الفحص والبحث عن الأطباء"):
                 
             except Exception as e:
                 st.error(f"حدث خطأ أثناء الاتصال بالذكاء الاصطناعي: {e}")
-
-st.write("---")
-        st.warning(f"عذراً، لم يتم العثور على دكتور {specialty} في قاعدة بيانات {city} حالياً.")
 
 st.write("---")
